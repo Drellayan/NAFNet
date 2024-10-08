@@ -8,7 +8,7 @@
 name: NAFNet-GoPro-width32
 model_type: ImageRestorationModel
 scale: 1
-num_gpu: 8
+num_gpu: 1
 manual_seed: 42
 
 datasets:
@@ -51,7 +51,7 @@ network_g:
 
 # path
 path:
-  pretrain_network_g: ~
+  pretrain_network_g: experiments/pretrained_models/NAFNet-GoPro-width32.pth
   strict_load_g: true
   resume_state: ~
 
