@@ -44,6 +44,7 @@ datasets:
 
 network_g:
   type: NAFNetLocal
+  img_channel: 1
   width: 32
   enc_blk_nums: [1, 1, 1, 28]
   middle_blk_num: 1
@@ -51,7 +52,7 @@ network_g:
 
 # path
 path:
-  pretrain_network_g: experiments/pretrained_models/NAFNet-GoPro-width32.pth
+  pretrain_network_g: ~
   strict_load_g: true
   resume_state: ~
 

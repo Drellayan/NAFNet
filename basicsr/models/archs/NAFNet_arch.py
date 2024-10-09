@@ -82,7 +82,7 @@ class NAFBlock(nn.Module):
 
 class NAFNet(nn.Module):
 
-    def __init__(self, img_channel=3, width=16, middle_blk_num=1, enc_blk_nums=[], dec_blk_nums=[]):
+    def __init__(self, img_channel=1, width=16, middle_blk_num=1, enc_blk_nums=[], dec_blk_nums=[]):
         super().__init__()
 
         self.intro = nn.Conv2d(in_channels=img_channel, out_channels=width, kernel_size=3, padding=1, stride=1, groups=1,
@@ -162,7 +162,7 @@ class NAFNet(nn.Module):
         return x
 
 class NAFNetLocal(Local_Base, NAFNet):
-    def __init__(self, *args, train_size=(1, 3, 256, 256), fast_imp=False, **kwargs):
+    def __init__(self, *args, train_size=(1, 1, 256, 256), fast_imp=False, **kwargs):
         Local_Base.__init__(self)
         NAFNet.__init__(self, *args, **kwargs)
 
@@ -175,7 +175,7 @@ class NAFNetLocal(Local_Base, NAFNet):
 
 
 if __name__ == '__main__':
-    img_channel = 3
+    img_channel = 1
     width = 32
 
     # enc_blks = [2, 2, 4, 8]
@@ -190,7 +190,7 @@ if __name__ == '__main__':
                       enc_blk_nums=enc_blks, dec_blk_nums=dec_blks)
 
 
-    inp_shape = (3, 256, 256)
+    inp_shape = (1, 256, 256)
 
     from ptflops import get_model_complexity_info
 
