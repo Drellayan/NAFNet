@@ -58,6 +58,8 @@ class BaseModel():
                                     save_img, rgb2bgr, use_image)
 
     def get_current_log(self):
+        if not hasattr(self,"log_dict"):
+            self.log_dict = {}
         return self.log_dict
 
     def model_to_device(self, net):

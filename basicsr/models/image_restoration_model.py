@@ -244,6 +244,7 @@ class ImageRestorationModel(BaseModel):
                 j = i + m
                 if j >= n:
                     j = n
+                # print(f'!!!!lq_size:{self.lq.shape}')
                 pred = self.net_g(self.lq[i:j])
                 if isinstance(pred, list):
                     pred = pred[-1]
