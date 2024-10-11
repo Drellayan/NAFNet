@@ -1,4 +1,7 @@
-from basicsr.utils.create_lmdb import create_lmdb_for_gopro
+# import sys, os
+# sys.path.append(os.path.abspath(r'F:\project\NAFNet'))
+
+from basicsr.utils.create_lmdb import create_lmdb_for_gopro, create_lmdb_for_val
 
 def main():
     opt = {}
@@ -10,6 +13,7 @@ def main():
 
 
     create_lmdb_for_gopro()
+    create_lmdb_for_val()
 
 if __name__ == '__main__':
     main()
