@@ -17,6 +17,9 @@ from basicsr.models.base_model import BaseModel
 from basicsr.utils import get_root_logger, imwrite, tensor2img
 from basicsr.utils.dist_util import get_dist_info
 
+from torchvision.utils import save_image
+
+
 loss_module = importlib.import_module('basicsr.models.losses')
 metric_module = importlib.import_module('basicsr.metrics')
 
@@ -190,8 +193,9 @@ class ImageRestorationModel(BaseModel):
         self.optimizer_g.zero_grad()
 
         if self.opt['train'].get('mixup', False):
-            self.mixup_aug()
-
+            self.mixup_aug()        
+        # save_image(self.lq[0],'./what.png')
+        # print(f'!!!!lq_type:{type(self.lq)}')
         preds = self.net_g(self.lq)
         if not isinstance(preds, list):
             preds = [preds]
@@ -236,6 +240,8 @@ class ImageRestorationModel(BaseModel):
     def test(self):
         self.net_g.eval()
         with torch.no_grad():
+            # save_image(self.lq[0],'./how.png')
+            # print(f'!!!!lq_size:{self.lq.shape}')
             n = len(self.lq)
             outs = []
             m = self.opt['val'].get('max_minibatch', n)
@@ -244,7 +250,7 @@ class ImageRestorationModel(BaseModel):
                 j = i + m
                 if j >= n:
                     j = n
-                # print(f'!!!!lq_size:{self.lq.shape}')
+                
                 pred = self.net_g(self.lq[i:j])
                 if isinstance(pred, list):
                     pred = pred[-1]

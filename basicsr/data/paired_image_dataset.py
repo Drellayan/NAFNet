@@ -13,6 +13,7 @@ from basicsr.data.data_util import (paired_paths_from_folder,
 from basicsr.data.transforms import augment, paired_random_crop
 from basicsr.utils import FileClient, imfrombytes, img2tensor, padding
 
+import numpy as np
 
 class PairedImageDataset(data.Dataset):
     """Paired image dataset for image restoration.
@@ -88,7 +89,7 @@ class PairedImageDataset(data.Dataset):
         # print('gt path,', gt_path)
         img_bytes = self.file_client.get(gt_path, 'gt')
         try:
-            img_gt = imfrombytes(img_bytes, float32=True)
+            img_gt = imfrombytes(img_bytes, flag='grayscale', float32=True)
         except:
             raise Exception("gt path {} not working".format(gt_path))
 
@@ -96,11 +97,17 @@ class PairedImageDataset(data.Dataset):
         # print(', lq path', lq_path)
         img_bytes = self.file_client.get(lq_path, 'lq')
         try:
-            img_lq = imfrombytes(img_bytes, float32=True)
+            img_lq = imfrombytes(img_bytes, flag='grayscale', float32=True)
         except:
             raise Exception("lq path {} not working".format(lq_path))
-
-
+        
+        if len(img_gt.shape) == 2:
+            img_gt = np.expand_dims(img_gt, -1)
+        if len(img_lq.shape) == 2:
+            img_lq = np.expand_dims(img_lq, -1)
+        # print(f"!!!!!!!!!!!img_gt_shape:{type(img_gt)}")
+        # print(f"!!!!!!!!!!!img_lq_shape:{img_gt.shape}")
+        
         # augmentation for training
         if self.opt['phase'] == 'train':
             gt_size = self.opt['gt_size']
@@ -115,7 +122,7 @@ class PairedImageDataset(data.Dataset):
                                      self.opt['use_rot'])
 
         # TODO: color space transform
-        # BGR to RGB, HWC to CHW, numpy to tensor
+        # BGR to RGB, HWC to CHW, numpy to tensor        
         img_gt, img_lq = img2tensor([img_gt, img_lq],
                                     bgr2rgb=True,
                                     float32=True)

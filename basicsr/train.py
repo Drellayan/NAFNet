@@ -188,6 +188,16 @@ def main():
     result = create_train_val_dataloader(opt, logger)
     train_loader, train_sampler, val_loader, total_epochs, total_iters = result
 
+    # print(f"!!!!!!!!!!!!train_loader_keys:{len(train_loader.dataset[2].keys())}")
+    # print(f"!!!!!!!!!!!!val_loader_keys:{len(val_loader.dataset[2].keys())}")
+    # aa, bb, cc, dd = val_loader.dataset[2]
+    # print(f"!!!!!!!!!!!!aa_shape:{aa}")
+    # print(f"!!!!!!!!!!!!aa:{val_loader.dataset[2][aa].shape}")
+    # print(f"!!!!!!!!!!!!bb:{val_loader.dataset[2][bb].shape}")
+    # print(f"!!!!!!!!!!!!cc:{val_loader.dataset[2][cc]}")
+    # print(f"!!!!!!!!!!!!dd:{val_loader.dataset[2][dd]}")
+
+
     # create model
     if resume_state:  # resume training
         check_resume(opt, resume_state['iter'])
@@ -267,6 +277,7 @@ def main():
                 rgb2bgr = opt['val'].get('rgb2bgr', True)
                 # wheather use uint8 image to compute metrics
                 use_image = opt['val'].get('use_image', True)
+                # use_image = False
                 model.validation(val_loader, current_iter, tb_logger,
                                  opt['val']['save_img'], rgb2bgr, use_image )
                 log_vars = {'epoch': epoch, 'iter': current_iter, 'total_iter': total_iters}
